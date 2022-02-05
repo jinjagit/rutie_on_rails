@@ -1,4 +1,6 @@
 class ArraysController < ApplicationController
+  require 'benchmark'
+
   def reverse
     array = ['Ruby', 'to', 'Rust']
     reversed = RustLib.reverse(array)
@@ -16,14 +18,25 @@ class ArraysController < ApplicationController
     end
 
     words_to_find = get_random_items(blocked_words, 5)
-    text_array = create_array_including_supplied_words(100000, words_to_find)
+    text_array = create_array_including_supplied_words(10000, words_to_find)
     found_words = find_blocked_words(text_array, blocked_words)
-    check = check_array_contains_elements(found_words, words_to_find)
+    check_ruby = check_array_contains_elements(found_words, words_to_find)
+
+    ruby_benchmark = Benchmark.measure {
+      find_blocked_words(text_array, blocked_words)
+    }
 
     @text = "words_to_find: #{words_to_find.inspect}\n"\
             "text_array: #{text_array.inspect}\n"\
             "found_words: #{found_words.inspect}\n"\
-            "passed check? #{check}"
+            "passed check_ruby? #{check_ruby}\n\n"\
+            "ruby_benchmark:\n"\
+            "real: #{ruby_benchmark.real}\n"\
+            "cstime: #{ruby_benchmark.cstime}\n"\
+            "cutime: #{ruby_benchmark.cutime}\n"\
+            "stime: #{ruby_benchmark.stime}\n"\
+            "utime: #{ruby_benchmark.utime}\n"\
+            "total: #{ruby_benchmark.total}\n"\
   end
 
   private
