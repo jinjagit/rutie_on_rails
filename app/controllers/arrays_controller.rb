@@ -15,25 +15,25 @@ class ArraysController < ApplicationController
       blocked_words << line.strip
     end
 
-    words_to_find = get_random_items(blocked_words, 3)
-    text_array = create_array_including_supplied_words(5, words_to_find)
-    found_words = find_blocked_words(text_array, words_to_find)
+    words_to_find = get_random_items(blocked_words, 5)
+    text_array = create_array_including_supplied_words(10000, words_to_find)
+    found_words = find_blocked_words(text_array, blocked_words)
+    check = check_arrays_contain_same_elements(words_to_find, found_words)
 
     @text = "words_to_find: #{words_to_find.inspect}\n"\
             "text_array: #{text_array.inspect}\n"\
             "found_words: #{found_words.inspect}\n"\
-            "passed check? #{check_arrays_contain_same_elements(words_to_find, found_words)}"
+            "passed check? #{check}"
   end
 
   private
 
-  def find_blocked_words(text_array, words_to_find)
+  def find_blocked_words(text_array, blocked_words)
     found_words = []
 
     text_array.length.times do |i|
       word = text_array[i]
-      found_words << word if words_to_find.include? word
-      break if found_words.length == words_to_find.length
+      found_words << word if blocked_words.include? word
     end
 
     found_words
