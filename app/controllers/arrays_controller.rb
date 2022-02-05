@@ -26,17 +26,26 @@ class ArraysController < ApplicationController
       find_blocked_words(text_array, blocked_words)
     }
 
-    @text = "words_to_find: #{words_to_find.inspect}\n"\
-            "text_array: #{text_array.inspect}\n"\
-            "found_words: #{found_words.inspect}\n"\
-            "passed check_ruby? #{check_ruby}\n\n"\
-            "ruby_benchmark:\n"\
-            "real: #{ruby_benchmark.real}\n"\
-            "cstime: #{ruby_benchmark.cstime}\n"\
-            "cutime: #{ruby_benchmark.cutime}\n"\
-            "stime: #{ruby_benchmark.stime}\n"\
-            "utime: #{ruby_benchmark.utime}\n"\
-            "total: #{ruby_benchmark.total}\n"\
+    found_words = RustLib.find_blocked_words(text_array, blocked_words)
+    check_rust = check_array_contains_elements(found_words, words_to_find)
+
+    rust_benchmark = Benchmark.measure {
+      RustLib.find_blocked_words(text_array, blocked_words)
+    }
+
+    performance = ruby_benchmark.total / rust_benchmark.total
+
+    if check_ruby && check_rust
+      @text = "Array of #{text_array.length} strings compared to array of #{blocked_words.length} strings\n"\
+              "= #{text_array.length * blocked_words.length} comparisons\n\n"\
+              "Ruby version total time: #{ruby_benchmark.total.round(6)}\n\n"\
+              "Rust version total time: #{rust_benchmark.total.round(6)}\n\n"\
+              "Rust was #{performance.round(2)} times faster than Ruby"
+    else
+      @text = "Oops! Something went wrong\n\n"\
+              "passed check_ruby? #{check_ruby}\n"\
+              "passed check_rust? #{check_rust}"
+    end
   end
 
   private
@@ -44,8 +53,7 @@ class ArraysController < ApplicationController
   def find_blocked_words(text_array, blocked_words)
     found_words = []
 
-    text_array.length.times do |i|
-      word = text_array[i]
+    text_array.each do |word|
       found_words << word if blocked_words.include? word
     end
 
@@ -55,8 +63,8 @@ class ArraysController < ApplicationController
   def check_array_contains_elements(array, elements)
     passed = true
 
-    elements.length.times do |i|
-      passed = false unless array.include? elements[i]
+    elements.each do |el|
+      passed = false unless array.include? el
     end
 
     passed
@@ -68,21 +76,22 @@ class ArraysController < ApplicationController
     check_unique_selection_limit(from_n, get_n)
 
     integers = []
-      loop do
-        int = rand(from_n)
-        integers << int unless integers.include? int
-        break if integers.length == get_n
-      end
 
-      integers
+    loop do
+      int = rand(from_n)
+      integers << int unless integers.include? int
+      break if integers.length == get_n
+    end
+
+    integers
   end
 
   def get_random_items(array, n_items)
     check_unique_selection_limit(array.length, n_items)
 
     indices = n_unique_integers(array.length, n_items)
-
     selected = []
+
     n_items.times do |i|
       selected << array[indices[i]]
     end
@@ -91,9 +100,7 @@ class ArraysController < ApplicationController
   end
 
   def check_unique_selection_limit(a, b)
-    if b > a
-      raise StandardError.new "Cannot return more unique items than exist"
-    end
+    raise StandardError.new "Cannot return more unique items than exist" if b > a
   end
 
   def replace_items_in_array(array, new_items)
@@ -121,8 +128,15 @@ class ArraysController < ApplicationController
 
   def create_array_including_supplied_words(n_words, supplied_words)
     array_of_random_strings = create_array_of_random_strings(n_words)
-    prepared_array = replace_items_in_array(array_of_random_strings, supplied_words)
+    replace_items_in_array(array_of_random_strings, supplied_words)
+  end
 
-    prepared_array
+  def all_benchmarks (benchmark)
+    "real: #{benchmark.real}\n"\
+    "cstime: #{benchmark.cstime}\n"\
+    "cutime: #{benchmark.cutime}\n"\
+    "stime: #{benchmark.stime}\n"\
+    "utime: #{benchmark.utime}\n"\
+    "total: #{benchmark.total}\n"
   end
 end

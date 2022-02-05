@@ -14,15 +14,23 @@ rutie_serde_methods!(
     ruby_class!(Exception),
 
     fn pub_hello_world() -> String {
-        let string = format!("Rust says 'Hi!'");
-
-        string
+        format!("Rust says 'Hi!'")
     }
 
     fn pub_reverse(array: Vec<String>) -> Vec<String> {
-        let reverse = array.into_iter().rev().collect();
+        array.into_iter().rev().collect()
+    }
 
-        reverse
+    fn pub_find_blocked_words(text_array: Vec<String>, blocked_words: Vec<String>) -> Vec<String> {
+        let mut found_words: Vec<String> = vec![];
+
+        for val in text_array.iter() {
+            if blocked_words.contains(&val) {
+                found_words.push(val.to_string());
+            }
+        }
+
+        found_words
     }
 );
 
@@ -32,5 +40,6 @@ pub extern "C" fn Init_rust_lib() {
     rutie::Class::new("RustLib", None).define(|itself| {
         itself.def_self("hello_world", pub_hello_world);
         itself.def_self("reverse", pub_reverse);
+        itself.def_self("find_blocked_words", pub_find_blocked_words);
     });
 }
