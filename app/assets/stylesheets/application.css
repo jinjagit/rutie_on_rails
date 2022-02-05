@@ -24,6 +24,7 @@ p {
 
 .output {
   white-space: pre;
+  font-family: monospace, monospace;
 }
 
 .profiler-results.profiler-top.profiler-left {

@@ -9,9 +9,7 @@ Currently simply passes an array to Rust, reverses the array and returns it to R
 When the Rust `lib.rs` is edited and recompiled to a release binary, the Docker container needs to be restarted for the changes to take effect.
 If compiling on Mac, cross-compilation to a Linux binary is needed (which is not covered here, and will involve the use of additional compilation libraries). This is because the Docker container runs a Linux image.
 
-Basic structure is a mixture of experimentation from 2 of my repos, both of which lean heavily on basic doumentation and specific articles (see readme in repos for more details):
-- https://github.com/jinjagit/rails-pg-in-docker
-- https://github.com/jinjagit/rust-on-rails
+Based on the approach described in [Using Rust to Speed Up Your Ruby Apps: Part 2](https://vericred.com/using-rust-to-speed-up-your-ruby-apps-part-2-how-to-use-rust-with-ruby/)
 
 ## Next steps
 - [x] Pass something into Rust method from Ruby, and print it out.
