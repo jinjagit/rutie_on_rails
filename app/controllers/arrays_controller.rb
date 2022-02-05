@@ -16,9 +16,9 @@ class ArraysController < ApplicationController
     end
 
     words_to_find = get_random_items(blocked_words, 5)
-    text_array = create_array_including_supplied_words(10000, words_to_find)
+    text_array = create_array_including_supplied_words(100000, words_to_find)
     found_words = find_blocked_words(text_array, blocked_words)
-    check = check_arrays_contain_same_elements(words_to_find, found_words)
+    check = check_array_contains_elements(found_words, words_to_find)
 
     @text = "words_to_find: #{words_to_find.inspect}\n"\
             "text_array: #{text_array.inspect}\n"\
@@ -39,15 +39,11 @@ class ArraysController < ApplicationController
     found_words
   end
 
-  def check_arrays_contain_same_elements(array_a, array_b)
-    if array_a.length != array_b.length
-      raise StandardError.new "Compared arrays are different lengths"
-    end
-
+  def check_array_contains_elements(array, elements)
     passed = true
 
-    array_a.length.times do |i|
-      passed = false unless array_b.include? array_a[i]
+    elements.length.times do |i|
+      passed = false unless array.include? elements[i]
     end
 
     passed
