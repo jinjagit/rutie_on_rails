@@ -33,18 +33,29 @@ class ArraysController < ApplicationController
       RustLib.find_blocked_words(text_array, blocked_words)
     }
 
-    performance = ruby_benchmark.total / rust_benchmark.total
+    found_words = RustLib.find_blocked_words_multi(text_array, blocked_words)
+    check_rust_multi = check_array_contains_elements(found_words, words_to_find)
 
-    if check_ruby && check_rust
+    rust_multi_benchmark = Benchmark.measure {
+      RustLib.find_blocked_words_multi(text_array, blocked_words)
+    }
+
+    performance_s = ruby_benchmark.total / rust_benchmark.total
+    performance_m = ruby_benchmark.total / rust_multi_benchmark.total
+
+    if check_ruby && check_rust && check_rust_multi
       @text = "Array of #{text_array.length} strings compared to array of #{blocked_words.length} strings\n"\
               "= #{text_array.length * blocked_words.length} comparisons\n\n"\
-              "Ruby version total time: #{ruby_benchmark.total.round(6)}\n\n"\
-              "Rust version total time: #{rust_benchmark.total.round(6)}\n\n"\
-              "Rust was #{performance.round(2)} times faster than Ruby"
+              "Ruby version total time:         #{ruby_benchmark.total.round(6)}\n\n"\
+              "Rust single-threaded total time: #{rust_benchmark.total.round(6)}\n\n"\
+              "Rust multi-threaded total time:  #{rust_multi_benchmark.total.round(6)}\n\n"\
+              "Rust single-threaded was #{performance_s.round(2)} times faster than Ruby\n"\
+              "Rust multi-threaded was #{performance_m.round(2)} times faster than Ruby"\
     else
       @text = "Oops! Something went wrong\n\n"\
               "passed check_ruby? #{check_ruby}\n"\
-              "passed check_rust? #{check_rust}"
+              "passed check_rust? #{check_rust}\n"\
+              "passed check_rust? #{check_rust_multi}"
     end
   end
 
