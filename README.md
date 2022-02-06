@@ -80,4 +80,4 @@ Based on the approach described in [Using Rust to Speed Up Your Ruby Apps: Part 
 ## Why is multi-threaded slower, or not much faster, than single-threaded?
 _"[multi-threaded code] won’t run much faster when executed in parallel outside the GVL [Ruby Global Virtual Machine Lock]. But given a more complex real-life scenario where your Ruby app is running on hardware under load inside a web server like Puma you would very likely see meaningful performance gains."_, Vericred 2020
   
-TODO: Verify this with load testing. This is probably done with the Rails app in production mode.
+TODO: Verify this with load testing. This is probably best done with the Rails app in production mode.
