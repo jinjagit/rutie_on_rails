@@ -38,7 +38,7 @@ class AppConfigsController < ApplicationController
   def update
     respond_to do |format|
       if @app_config.update(app_config_params)
-        format.html { redirect_to app_config_url(@app_config), notice: "App config was successfully updated." }
+        format.html { redirect_to controller: :hello, action: :hello }
         format.json { render :show, status: :ok, location: @app_config }
       else
         format.html { render :edit, status: :unprocessable_entity }

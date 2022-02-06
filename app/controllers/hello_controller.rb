@@ -1,5 +1,11 @@
 class HelloController < ApplicationController
   def hello
-    @hello = RustLib.hello_world
+    @app_config = AppConfig.first
+
+    if @app_config.rust_enabled
+      @hello = RustLib.hello_world
+    else
+      @hello = "Ruby says 'Hi!'"
+    end
   end
 end
