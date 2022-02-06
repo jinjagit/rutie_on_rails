@@ -47,10 +47,10 @@ class ArraysController < ApplicationController
       @text = "Array of #{text_array.length} strings compared to array of #{blocked_words.length} strings\n"\
               "= #{text_array.length * blocked_words.length} comparisons\n\n"\
               "Ruby version total time:         #{ruby_benchmark.total.round(6)}\n\n"\
-              "Rust single-threaded total time: #{rust_benchmark.total.round(6)}\n\n"\
-              "Rust multi-threaded total time:  #{rust_multi_benchmark.total.round(6)}\n\n"\
-              "Rust single-threaded was #{performance_s.round(2)} times faster than Ruby\n"\
-              "Rust multi-threaded was #{performance_m.round(2)} times faster than Ruby"\
+              "Rust single-threaded total time: #{rust_benchmark.total.round(6)}\n"\
+              "= #{performance_s.round(2)} times faster than Ruby\n\n"\
+              "Rust multi-threaded total time:  #{rust_multi_benchmark.total.round(6)}\n"\
+              "= #{performance_m.round(2)} times faster than Ruby"\
     else
       @text = "Oops! Something went wrong\n\n"\
               "passed check_ruby? #{check_ruby}\n"\

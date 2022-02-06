@@ -2,6 +2,8 @@
 POC - Rust on Rails, using Rutie gem & crate.
 
 <img width="672" alt="rust_x_ruby" src="https://user-images.githubusercontent.com/3944042/152663469-12826106-a7e0-4393-94ad-13b942b5df4f.png">
+<br>  
+<br>
 
 ## Quickstart
 
@@ -74,3 +76,10 @@ If compiling on Mac, cross-compilation to a Linux binary is needed (which is not
 The Rust functions written for this demo are in the file: [`rust_lib/src/lib.rs`](https://github.com/jinjagit/rutie_on_rails/blob/master/rust_lib/src/lib.rs)  
 
 Based on the approach described in [Using Rust to Speed Up Your Ruby Apps: Part 2, by Vericred](https://vericred.com/using-rust-to-speed-up-your-ruby-apps-part-2-how-to-use-rust-with-ruby/)
+<br>  
+<br>
+
+## Why is multi-threaded slower, or not much faster, than single-threaded?
+_"[multi-threaded code] won’t run much faster when executed in parallel outside the GVL. But given a more complex real-life scenario where your Ruby app is running on hardware under load inside a web server like Puma you would very likely see meaningful performance gains."_, Vericred 2020
+  
+TODO: Verify this with load testing. This is probably done with the Rails app in production mode.
