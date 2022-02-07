@@ -2,7 +2,6 @@
 POC - Rust on Rails, using Rutie gem & crate.
 
 <img width="672" alt="multi" src="https://user-images.githubusercontent.com/3944042/152689049-33f11d88-a265-4969-bba3-fc314e83080e.png">
-<br>
 
 A [non-dockerized version](https://github.com/jinjagit/rutie_demo) is deployed on Heroku.
 Visit https://rutie-demo-simontharby.herokuapp.com/ for hello_world
