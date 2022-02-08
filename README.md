@@ -21,7 +21,7 @@ docker-compose up
   
 Visit `localhost:3000` for Rust hello_world  
 Visit `localhost:3000/arrays/blocked_words` for comparative benchmarks  
-Visit: `localhost:3000/vericred_example` for Vericred example with objects (benchmarked)  
+Visit `localhost:3000/vericred_example` for Vericred example with objects (benchmarked)  
   
 ## To add Rust to a Rails app
 This is already done in this demo repo, but if you want to do it yourself...  
